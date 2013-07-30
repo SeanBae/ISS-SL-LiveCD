@@ -1,0 +1,48 @@
+#Scientific Linux 5.5 LiveCD image creating script
+#Written by Sean Bae
+#For ISS-CREAM Project of Cosmic Ray Physics Group of University of Maryland, College Park
+
+LIVE=/scratch/livecd
+mkdir -p $LIVE
+cd $LIVE
+mkdir dev proc sys etc tmp
+touch etc/fstab etc/mtab
+mount --bind /dev dev
+mount null -t proc proc
+mount null -t sysfs sys
+cp -a /etc/yum.conf $LIVE/etc 
+cp -a /etc/yum.repos.d $LIVE/etc/
+mkdir -p $LIVE/var/lock/rpm
+yum -c $LIVE/etc/yum.conf --installroot=$LIVE -y install yum rootfiles shadow-utils \
+bind-utils gnupg vim-minimal vixie-cron crontabs passwd which kudzu dhclient \
+pciutils eject mkisofs wget kernel grub
+cd $LIVE
+sed -i "s|\*|x|" etc/passwd
+sed -i "s|^root::|root:x:|" etc/passwd
+cat etc/passwd | cut -d":" -f 1 | while read u; do echo "$u:*:12345:0:99999:1:::"; done >> etc/shadow
+chmod 600 etc/shadow
+cp -a etc/group etc/gshadow
+sed -i "s|:x:|::|" etc/gshadow
+sed -i "s|:[0-9]\+:|::|" etc/gshadow
+chmod 600 etc/gshadow
+yum -c $LIVE/etc/yum.conf --installroot=$LIVE -y install openssh-clients
+cp /etc/resolv.conf $LIVE/etc
+cp /etc/sysconfig/network $LIVE/etc/sysconfig/
+cp /etc/sysconfig/i18n $LIVE/etc/sysconfig/
+cp /etc/sysconfig/authconfig $LIVE/etc/sysconfig/
+cp /etc/sysconfig/kernel $LIVE/etc/sysconfig/
+cp /etc/sysconfig/clock $LIVE/etc/sysconfig/
+umount $LIVE/proc
+yum -c $LIVE/etc/yum.conf --installroot=$LIVE -y install squashfs-tools aufs
+mkdir $LIVE/build
+cd $LIVE/build
+wget www.livecd.ethz.ch/download/build/livecd-3.1.0.tar.gz
+tar xfvz livecd-3.1.0.tar.gz
+cd $LIVE/build/livecd-3.1.0
+KERNELVERSION=$(cut -c 15-32 /proc/version)
+sed "s/2.6.18-194.3.1.el5/$KERNELVERSION/" livecd.conf > livecd1.conf
+rm -f livecd.conf
+mv livecd1.conf livecd.conf
+####Manually execute the following two lines of command####
+#chroot /scratch/livecd/
+#/build/livecd/livecd-3.1.0/build-livecd.sh
