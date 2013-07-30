@@ -43,6 +43,6 @@ KERNELVERSION=$(cut -c 15-32 /proc/version)
 sed "s/2.6.18-194.3.1.el5/$KERNELVERSION/" livecd.conf > livecd1.conf
 rm -f livecd.conf
 mv livecd1.conf livecd.conf
-####Manually execute the following two lines of command####
+###Manually execute the following two lines of command###
 #chroot /scratch/livecd/
 #/build/livecd/livecd-3.1.0/build-livecd.sh
