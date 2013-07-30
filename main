@@ -13,6 +13,8 @@ mount null -t sysfs sys
 cp -a /etc/yum.conf $LIVE/etc 
 cp -a /etc/yum.repos.d $LIVE/etc/
 mkdir -p $LIVE/var/lock/rpm
+
+#List of Packages
 yum -c $LIVE/etc/yum.conf --installroot=$LIVE -y install yum rootfiles shadow-utils \
 bind-utils gnupg vim-minimal vixie-cron crontabs passwd which kudzu dhclient \
 pciutils eject mkisofs wget kernel grub
