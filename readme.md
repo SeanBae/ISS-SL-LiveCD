@@ -11,7 +11,7 @@ NOTE:
 
 - Make sure you run the last command in the `chroot` environment
 
-- Even though this script was originally written for the ISS-CREAM project, this can be used for any project that requires SL5.5 LiveCD generation
+- Even though this script was originally written for the ISS-CREAM project, this can be used for any project that requires rapid SL5.5 LiveCD generation
 
 ----
 
