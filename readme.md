@@ -5,8 +5,14 @@ By Sean Bae
 
 ----
 
+NOTE:
+
+- Make sure you run the last command in the `chroot` environment
+
+----
+
 INSTRUCTION:
 
-1. Run the main script
+1. Run the `main` script
 
-2. Execute the two commands
+2. Execute the two commands: `chroot /scratch/livecd/` and `/build/livecd/livecd-3.1.0/build-livecd.sh`
